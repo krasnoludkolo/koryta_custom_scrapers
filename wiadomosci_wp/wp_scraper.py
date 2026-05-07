@@ -6,6 +6,9 @@ import requests as r
 from bs4 import BeautifulSoup
 
 
+# TODO
+# - add regional
+
 @dataclass
 class PolskaResponse:
     urls: list[str]
