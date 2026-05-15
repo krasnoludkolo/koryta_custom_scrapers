@@ -1,3 +1,7 @@
 # Custom Scrapers
 
-PoC for custom Onet Scraper
+## To consider 
+- read articles leads
+
+## To check
+- tvn24.pl
