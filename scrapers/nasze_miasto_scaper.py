@@ -8,9 +8,6 @@ from scrapers.url.url_client import UrlClient
 
 
 # TODO
-# url client
-# all cities
-# all pages loop
 # integrate to check when to stop
 class NaszeMiastoScraper:
 

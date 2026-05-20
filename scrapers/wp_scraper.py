@@ -20,7 +20,7 @@ class WpScraper:
         self.max_pages: int = max_pages
 
     def get_articles_from_polska_page(self, page: int) -> List[str]:
-        print(f"Getting articles from page {page}")
+        print(f"[WP] Getting articles from page {page}")
 
         url = f'https://wiadomosci.wp.pl/polska-6750773603044864k/{page}'  # TODO check if category id is constant
         response = r.get(url=url)
@@ -36,12 +36,12 @@ class WpScraper:
                 articles_object = item
                 break
         if not articles_object:
-            print(f"No articles found on page {page}")
+            print(f"[WP] No articles found on page {page}")
             # TODO monitor it
             return []
         urls = [item['url'] for item in articles_object['mainEntity']['itemListElement']]
 
-        print(f"Found {len(urls)} articles on page {page}")
+        print(f"[WP] Found {len(urls)} articles on page {page}")
         return urls
 
     def collect_urls(self):
