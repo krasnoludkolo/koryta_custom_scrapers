@@ -5,7 +5,6 @@ from typing import List
 import requests as r
 from bs4 import BeautifulSoup
 
-from scrapers.url.file_url_client import FileUrlClient
 from scrapers.url.url_client import UrlClient
 
 
@@ -51,15 +50,8 @@ class WpScraper:
             response_urls = self.get_articles_from_polska_page(page)
             urls.extend(response_urls)
             some_url_exists = self.url_client.any_url_exists(response_urls)
-            for url in response_urls:
-                self.url_client.add_url(url)
+            self.url_client.add_urls(response_urls)
             if not response_urls or some_url_exists:
                 break
             page += 1
             time.sleep(1)  # just in case
-
-
-if __name__ == '__main__':
-    file_path = 'urls.txt'
-    scraper = WpScraper(FileUrlClient(file_path))
-    scraper.collect_urls()

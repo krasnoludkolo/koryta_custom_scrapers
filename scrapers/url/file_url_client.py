@@ -22,6 +22,10 @@ class FileUrlClient(UrlClient):
             f.write(url + '\n')
             print(f"[FileUrlClient] Added URL: {url}")
 
+    def add_urls(self, urls: List[str]):
+        for u in urls:
+            self.add_url(u)
+
     def any_url_exists(self, urls: List[str]) -> bool:
         with open(self.url_path, 'r') as f:
             existing_urls = set(line.strip() for line in f)

@@ -5,7 +5,6 @@ from typing import List
 from bs4 import BeautifulSoup
 from curl_cffi import requests as r
 
-from scrapers.url.file_url_client import FileUrlClient
 from scrapers.url.url_client import UrlClient
 
 
@@ -42,8 +41,7 @@ class OnetScraper:
             response_urls = self.__get_articles_from_kraj_page(page)
             urls.extend(response_urls)
             some_url_exists = self.url_client.any_url_exists(response_urls)
-            for url in response_urls:
-                self.url_client.add_url(url)
+            self.url_client.add_urls(response_urls)
             if not response_urls or some_url_exists:
                 break
             page += 1
@@ -55,9 +53,3 @@ class OnetScraper:
         if a_tag:
             return a_tag['href']
         return ''
-
-
-if __name__ == '__main__':
-    file_path = 'urls.txt'
-    scraper = OnetScraper(FileUrlClient(file_path))
-    scraper.collect_urls()

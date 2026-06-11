@@ -1,5 +1,8 @@
 # Custom Scrapers
 
+## TODO
+- [ ] use logging instead of print
+
 ## To consider 
 - read articles leads
 
