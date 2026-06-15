@@ -1,3 +1,4 @@
+import logging
 from typing import List
 
 from scrapers.url.url_client import UrlClient
@@ -16,11 +17,11 @@ class FileUrlClient(UrlClient):
         with open(self.url_path, 'r') as f:
             existing_urls = set(line.strip() for line in f)
             if url in existing_urls:
-                print(f"[FileUrlClient] URL already exists: {url}")
+                logging.info(f"[FileUrlClient] URL already exists: {url}")
                 return
         with open(self.url_path, 'a') as f:
             f.write(url + '\n')
-            print(f"[FileUrlClient] Added URL: {url}")
+            logging.info(f"[FileUrlClient] Added URL: {url}")
 
     def add_urls(self, urls: List[str]):
         for u in urls:

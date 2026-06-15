@@ -1,17 +1,54 @@
+import datetime
+import logging
+import os
+import sys
+
 from scrapers.common import create_url_client
 from scrapers.onet_scraper import OnetScraper
 from scrapers.wp_scraper import WpScraper
 
+LOCAL_ENV = 'LOCAL'
+ENV = os.environ.get("ENV", LOCAL_ENV)
+LOG_DIR = 'log/'
+
+
+def setup_logging(log_file_prefix='', console_level=logging.INFO):
+    handlers = []
+
+    if ENV != LOCAL_ENV:
+        if not os.path.exists(LOG_DIR):
+            os.makedirs(LOG_DIR)
+        log_file = f"{LOG_DIR}/{log_file_prefix}{str(datetime.datetime.now()).replace(' ', '-')}-debug.log"
+        file_handler = logging.FileHandler(log_file)
+        file_handler.setLevel(logging.DEBUG)
+        handlers.append(file_handler)
+
+    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler.setLevel(console_level)
+    handlers.append(console_handler)
+
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format="%(asctime)s | %(name)s | [%(levelname)s] - %(message)s",
+        handlers=handlers
+    )
+    logging.getLogger("httpcore").setLevel(logging.INFO)
+    logging.getLogger("urllib3").setLevel(logging.INFO)
+    logging.debug("Logging set up")
+
 
 def main():
-    source = 'custom_scraper'
+    try:
+        source = 'custom_scraper'
+        setup_logging(log_file_prefix=source, console_level=logging.DEBUG)
 
-    wp_scraper = WpScraper(create_url_client(source))
-    onet_scraper = OnetScraper(create_url_client(source))
+        wp_scraper = WpScraper(create_url_client(source))
+        onet_scraper = OnetScraper(create_url_client(source))
 
-    wp_scraper.collect_urls()
-    onet_scraper.collect_urls()
-
+        wp_scraper.collect_urls()
+        onet_scraper.collect_urls()
+    except Exception as e:
+        print(f"Error in main: {e}")
 
 if __name__ == '__main__':
     main()

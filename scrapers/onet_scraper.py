@@ -1,3 +1,4 @@
+import logging
 import re
 import time
 from typing import List
@@ -15,7 +16,7 @@ class OnetScraper:
         self.max_pages: int = max_pages
 
     def __get_articles_from_kraj_page(self, page: int) -> List[str]:
-        print(f"[Onet] Getting articles from page {page}")
+        logging.info(f"[Onet] Getting articles from page {page}")
         url = 'https://wiadomosci.onet.pl/kraj'
         params = {}
         if page > 1:  # for strona=1 it returns 410
@@ -31,7 +32,7 @@ class OnetScraper:
         if head_article_a['href']:
             urls = [head_article_a['href']] + urls
 
-        print(f"[Onet] Found {len(urls)} articles on page {page}")
+        logging.info(f"[Onet] Found {len(urls)} articles on page {page}")
         return urls
 
     def collect_urls(self):
