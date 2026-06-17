@@ -36,6 +36,7 @@ class OnetScraper:
         return urls
 
     def collect_urls(self):
+        logging.info("[Onet] Starting URL collection")
         page = 1  # Starts from page 1
         urls = []
         for _ in range(self.max_pages):

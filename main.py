@@ -4,6 +4,7 @@ import os
 import sys
 
 from scrapers.common import create_url_client
+from scrapers.nasze_miasto_scaper import NaszeMiastoScraper
 from scrapers.onet_scraper import OnetScraper
 from scrapers.wp_scraper import WpScraper
 
@@ -42,13 +43,18 @@ def main():
         source = 'custom_scraper'
         setup_logging(log_file_prefix=source, console_level=logging.DEBUG)
 
-        wp_scraper = WpScraper(create_url_client(source))
-        onet_scraper = OnetScraper(create_url_client(source))
+        url_client = create_url_client(source)
+        wp_scraper = WpScraper(url_client)
+        onet_scraper = OnetScraper(url_client)
+        nasze_miasto_scraper = NaszeMiastoScraper(url_client)
 
         wp_scraper.collect_urls()
         onet_scraper.collect_urls()
+        nasze_miasto_scraper.collect_urls()
     except Exception as e:
         print(f"Error in main: {e}")
 
+print('body')
 if __name__ == '__main__':
+    print("Starting scraper...")
     main()

@@ -1,16 +1,13 @@
+import logging
 import time
 
 from bs4 import BeautifulSoup
 from curl_cffi import requests as r
 
-from scrapers.common import create_url_store_client
-from scrapers.url.file_url_client import FileUrlClient
+from scrapers.common import create_url_client
 from scrapers.url.url_client import UrlClient
-from scrapers.url.url_store_url_client import UrlStoreUrlClient
 
 
-# TODO
-# integrate to check when to stop
 class NaszeMiastoScraper:
 
     def __init__(self, url_client: UrlClient):
@@ -55,15 +52,21 @@ class NaszeMiastoScraper:
 
         return list(set(all_urls))  # remove duplicates
 
-    def collect_urls_from_city(self, city: str):
+    def collect_urls(self):
+        logging.info("[NaszeMiasto] Starting URL collection")
+        cities = self._get_all_cities()
+        for city in cities:
+            self._collect_urls_from_city(city)
+
+    def _collect_urls_from_city(self, city: str):
+        logging.info(f"Collecting urls from city: {city}")
         page = 1  # Starts from page 1
         urls = []
         for _ in range(self.max_pages):
             response_urls = self._get_from_city_from_page(city, page)
             urls.extend(response_urls)
             some_url_exists = self.url_client.any_url_exists(response_urls)
-            for url in response_urls:
-                self.url_client.add_url(url)
+            self.url_client.add_urls(response_urls)
             if not response_urls or some_url_exists:
                 break
             page += 1
@@ -71,12 +74,10 @@ class NaszeMiastoScraper:
 
 
 def main():
-    client = create_url_store_client()
-    url_client = UrlStoreUrlClient(client)
-    scraper = NaszeMiastoScraper(url_client)
-    cities = scraper._get_all_cities()
-    for city in cities:
-        scraper.collect_urls_from_city(city)
+    client = create_url_client('nasze_miasto')
+    scraper = NaszeMiastoScraper(client)
+    cities = scraper.collect_urls()
+    pass
 
 
 if __name__ == '__main__':
