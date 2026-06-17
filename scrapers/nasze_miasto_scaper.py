@@ -40,11 +40,16 @@ class NaszeMiastoScraper:
         return cities
 
     def _get_from_city_from_page(self, city: str, page: int) -> list[str]:
+        logging.info(f"[NaszeMiasto] Getting articles from city {city} page {page}")
         url = f"https://{city}.naszemiasto.pl/wiadomosci/{page}"
 
         response = r.get(url, headers=self.headers, impersonate='chrome')
         soup = BeautifulSoup(response.text, 'html.parser')
         articles_section = soup.find('section', attrs={'data-ea': 'articles_left'})
+
+        if not articles_section:
+            logging.info(f"[NaszeMiasto] No articles section found for city {city} page {page}")
+            return []
 
         all_urls = articles_section.find_all('a', attrs={'data-ec': "atomsListingArticleTileWithSeparatedLink"})
         all_urls = [article['href'] for article in all_urls if 'href' in article.attrs and article['href'].startswith('/')]
@@ -56,7 +61,10 @@ class NaszeMiastoScraper:
         logging.info("[NaszeMiasto] Starting URL collection")
         cities = self._get_all_cities()
         for city in cities:
-            self._collect_urls_from_city(city)
+            try:
+                self._collect_urls_from_city(city)
+            except Exception as e:
+                logging.error(f"Error collecting urls from city {city}: {e}")
 
     def _collect_urls_from_city(self, city: str):
         logging.info(f"Collecting urls from city: {city}")
@@ -76,7 +84,7 @@ class NaszeMiastoScraper:
 def main():
     client = create_url_client('nasze_miasto')
     scraper = NaszeMiastoScraper(client)
-    cities = scraper.collect_urls()
+    cities = scraper._collect_urls_from_city('bierutow')
     pass
 
 
