@@ -5,7 +5,7 @@ from scrapers.url.url_store_client import UrlStoreClient
 from scrapers.url.url_store_url_client import UrlStoreUrlClient
 
 
-def create_url_client(source: str) -> UrlClient:
+def create_url_store_client(source: str) -> UrlClient:
     return UrlStoreUrlClient(
         store_client=UrlStoreClient(
             base_url=os.environ["URL_STORE_BASE_URL"],

@@ -2,10 +2,12 @@ import datetime
 import logging
 import os
 import sys
+from typing import List
 
-from scrapers.common import create_url_client
+from scrapers.common import create_url_store_client
 from scrapers.nasze_miasto_scaper import NaszeMiastoScraper
 from scrapers.onet_scraper import OnetScraper
+from scrapers.urlscraper import UrlScraper
 from scrapers.wp_scraper import WpScraper
 
 LOCAL_ENV = 'LOCAL'
@@ -43,16 +45,20 @@ def main():
         source = 'custom_scraper'
         setup_logging(log_file_prefix=source, console_level=logging.DEBUG)
 
-        url_client = create_url_client(source)
-        wp_scraper = WpScraper(url_client)
-        onet_scraper = OnetScraper(url_client)
-        nasze_miasto_scraper = NaszeMiastoScraper(url_client)
+        url_store_client = create_url_store_client(source)
 
-        wp_scraper.collect_urls()
-        onet_scraper.collect_urls()
-        nasze_miasto_scraper.collect_urls()
+        scrapers: List[UrlScraper] = [
+            WpScraper(url_store_client),
+            OnetScraper(url_store_client),
+            NaszeMiastoScraper(url_store_client),
+
+        ]
+
+        for scraper in scrapers:
+            scraper.collect_urls()
     except Exception as e:
         print(f"Error in main: {e}")
+
 
 print('body')
 if __name__ == '__main__':

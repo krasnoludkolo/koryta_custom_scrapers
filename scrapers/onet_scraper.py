@@ -7,9 +7,10 @@ from bs4 import BeautifulSoup
 from curl_cffi import requests as r
 
 from scrapers.url.url_client import UrlClient
+from scrapers.urlscraper import UrlScraper
 
 
-class OnetScraper:
+class OnetScraper(UrlScraper):
 
     def __init__(self, url_client: UrlClient, max_pages: int = 5):
         self.url_client: UrlClient = url_client

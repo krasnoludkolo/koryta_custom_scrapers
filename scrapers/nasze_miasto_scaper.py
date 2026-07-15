@@ -4,11 +4,12 @@ import time
 from bs4 import BeautifulSoup
 from curl_cffi import requests as r
 
-from scrapers.common import create_url_client
+from scrapers.common import create_url_store_client
 from scrapers.url.url_client import UrlClient
+from scrapers.urlscraper import UrlScraper
 
 
-class NaszeMiastoScraper:
+class NaszeMiastoScraper(UrlScraper):
 
     def __init__(self, url_client: UrlClient):
         self.url_client: UrlClient = url_client
@@ -82,7 +83,7 @@ class NaszeMiastoScraper:
 
 
 def main():
-    client = create_url_client('nasze_miasto')
+    client = create_url_store_client('nasze_miasto')
     scraper = NaszeMiastoScraper(client)
     cities = scraper._collect_urls_from_city('bierutow')
     pass

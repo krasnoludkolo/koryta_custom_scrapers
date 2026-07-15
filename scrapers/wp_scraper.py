@@ -6,6 +6,7 @@ from typing import List
 import requests as r
 from bs4 import BeautifulSoup
 
+from scrapers.urlscraper import UrlScraper
 from scrapers.url.file_url_client import FileUrlClient
 from scrapers.url.url_client import UrlClient
 
@@ -13,7 +14,7 @@ POLAND_URL = 'https://wiadomosci.wp.pl/polska-6750773603044864k'
 REGIONAL_URL = 'https://wiadomosci.wp.pl/regionalne-6750773603061248k'
 
 
-class WpScraper:
+class WpScraper(UrlScraper):
 
     def __init__(self, url_client: UrlClient, max_pages: int = 5):
         self.url_client: UrlClient = url_client
