@@ -14,7 +14,11 @@ class UrlStoreUrlClient(UrlClient):
         self.store_client.create_urls([UrlIn(url=url, source=self.source)])
 
     def add_urls(self, urls: List[str]):
-        self.store_client.create_urls([UrlIn(url=u, source=self.source) for u in urls])
+        if urls:
+            self.store_client.create_urls([UrlIn(url=u, source=self.source) for u in urls])
 
     def any_url_exists(self, urls: List[str]) -> bool:
-        return self.store_client.urls_exist(urls)
+        if urls:
+            return self.store_client.urls_exist(urls)
+        else:
+            return False

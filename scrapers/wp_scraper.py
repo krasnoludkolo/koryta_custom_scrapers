@@ -6,7 +6,7 @@ from typing import List
 import requests as r
 from bs4 import BeautifulSoup
 
-from scrapers.urlscraper import UrlScraper
+from scrapers.url_scraper import UrlScraper
 from scrapers.url.file_url_client import FileUrlClient
 from scrapers.url.url_client import UrlClient
 

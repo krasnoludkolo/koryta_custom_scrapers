@@ -1,8 +1,7 @@
 # Custom Scrapers
 
 ## TODO
-- [ ] use logging instead of print
-- [ ] push leads as context
+- [ ] https://www.fakt.pl/
 
 ## To check
-- tvn24.pl
+- [ ] push leads as context

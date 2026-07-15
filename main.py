@@ -5,9 +5,11 @@ import sys
 from typing import List
 
 from scrapers.common import create_url_store_client
+from scrapers.gazeta_scraper import GazetaScraper
 from scrapers.nasze_miasto_scaper import NaszeMiastoScraper
 from scrapers.onet_scraper import OnetScraper
-from scrapers.urlscraper import UrlScraper
+from scrapers.tvn24_scraper import TVN24Scraper
+from scrapers.url_scraper import UrlScraper
 from scrapers.wp_scraper import WpScraper
 
 LOCAL_ENV = 'LOCAL'
@@ -48,10 +50,11 @@ def main():
         url_store_client = create_url_store_client(source)
 
         scrapers: List[UrlScraper] = [
+            TVN24Scraper(url_store_client),
+            GazetaScraper(url_store_client),
             WpScraper(url_store_client),
             OnetScraper(url_store_client),
             NaszeMiastoScraper(url_store_client),
-
         ]
 
         for scraper in scrapers:
