@@ -5,6 +5,7 @@ import sys
 from typing import List
 
 from scrapers.common import create_url_store_client
+from scrapers.fakt_scraper import FaktScraper
 from scrapers.gazeta_scraper import GazetaScraper
 from scrapers.nasze_miasto_scaper import NaszeMiastoScraper
 from scrapers.onet_scraper import OnetScraper
@@ -50,6 +51,7 @@ def main():
         url_store_client = create_url_store_client(source)
 
         scrapers: List[UrlScraper] = [
+            FaktScraper(url_store_client),
             TVN24Scraper(url_store_client),
             GazetaScraper(url_store_client),
             WpScraper(url_store_client),
